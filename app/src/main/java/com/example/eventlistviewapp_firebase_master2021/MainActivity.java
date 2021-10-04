@@ -20,11 +20,13 @@ public class MainActivity extends AppCompatActivity {
     private int dateMonth;
     private int dateDay;
     private int dateYear;
+    private FirestoreHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        dbHelper = new FirestoreHelper();
 
         //  Video to learn basic access to CalendarView Data
         //  https://www.youtube.com/watch?v=WNBE_3ZizaA
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
             eventNameET.setText("");    // clears out text
             Toast.makeText(MainActivity.this, newEvent.getEventDate() + " " + newEvent.getEventName(), Toast.LENGTH_SHORT).show();
             Log.i("Denna", " " +newEvent.toString());
+            dbHelper.addEvent(newEvent);
         }
     }
 

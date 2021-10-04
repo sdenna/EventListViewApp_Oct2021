@@ -70,6 +70,9 @@ public class Event implements Parcelable
         this.key = "no key yet";
     }
 
+    // This constructor is needed so Firestore can accept an object directly
+    public Event() {}
+
     /**
      * This constructor is used when the unique Firebase key is already known.
      * @param eventName
