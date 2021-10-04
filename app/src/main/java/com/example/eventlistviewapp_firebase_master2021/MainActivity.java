@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -63,13 +64,20 @@ public class MainActivity extends AppCompatActivity {
             Event newEvent = new Event(eventName, dateSelected, dateYear, dateMonth, dateDay);
             eventNameET.setText("");    // clears out text
             Toast.makeText(MainActivity.this, newEvent.getEventDate() + " " + newEvent.getEventName(), Toast.LENGTH_SHORT).show();
-            Log.i("Denna", " " +newEvent.toString());
             dbHelper.addEvent(newEvent);
         }
     }
 
+    /**
+     * This method is called to retrieve the data from firestore.  Currently it is simply
+     * calling the helper method to get an array list with all events, and then the array list
+     * will be used to display the info when the next page loads.
+     */
+
     public void showData(View v) {
         Intent intent = new Intent(MainActivity.this, DisplayEventsActivity.class);
+        ArrayList<Event> eventsToShow = dbHelper.getEventsArrayList();
+        intent.putExtra("events", eventsToShow);
         startActivity(intent);
     }
 
