@@ -41,12 +41,12 @@ public class EditEventActivity extends AppCompatActivity {
         String eventDateToUpdate = event.getEventDate();
         keyToUpdate = event.getKey();
 
-        eventNameET = (EditText) findViewById(R.id.eventName);
-        calendarView = (CalendarView) findViewById(R.id.eventCalendarDate);
+        eventNameET = findViewById(R.id.eventName);
+        calendarView =  findViewById(R.id.eventCalendarDate);
 
         eventNameET.setText(eventNameToUpdate);
 
-        // This allows us to parse out the date to get teh month, day year
+        // This allows us to parse out the date to get the month, day, and year
         String parts[] = eventDateToUpdate.split("/");
 
         int month = Integer.parseInt(parts[0]);
@@ -55,8 +55,7 @@ public class EditEventActivity extends AppCompatActivity {
         dateSelected = (month + 1) + "/" + day + "/" + year;
 
         // Sets the month day, year on the calendar view so we can display the date
-        // they chose and avoid having to error check their entry when they enter a new
-        // date
+        // they chose and avoid having to error check their entry when they enter a new date
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, year);
@@ -66,7 +65,7 @@ public class EditEventActivity extends AppCompatActivity {
         long milliTime = calendar.getTimeInMillis();
         calendarView.setDate(milliTime);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+     //   SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -111,6 +110,8 @@ public class EditEventActivity extends AppCompatActivity {
         intent.putExtra("events", eventsToShow);
         startActivity(intent);
     }
+
+    // do I need this???
     public void onHome(View v) {
 
     }

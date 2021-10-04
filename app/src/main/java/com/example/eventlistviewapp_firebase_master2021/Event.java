@@ -9,8 +9,12 @@ import java.text.ParseException;
  * This class implements the Parcelable interface so that Event objects can be passed through the intent
  * https://code.tutsplus.com/tutorials/how-to-pass-data-between-activities-with-android-parcelable--cms-29559
  *
+ * This class implements the Comparable interface for the Event object.  This means that we have provided
+ * code for the compareTo method and by doing such, we can call the Collections.sort method to sort the arraylist
+ * of Event objects.  This allows us to have the Event objects sorted when they dipslay in the listview.
+ *
  */
-public class Event implements Parcelable
+public class Event implements Parcelable, Comparable<Event>
 {
     private String eventName;
     private String eventDate;
@@ -70,7 +74,7 @@ public class Event implements Parcelable
         this.key = "no key yet";
     }
 
-    // This constructor is needed so Firestore can accept an object directly
+    // This constructor is needed so Firestore can accept an object directly in .add() method
     public Event() {}
 
     /**
@@ -106,7 +110,6 @@ public class Event implements Parcelable
         dest.writeInt(year);
         dest.writeInt(day);
         dest.writeString(key);
-
     }
 
 
@@ -128,10 +131,18 @@ public class Event implements Parcelable
         return 0;
     }
 
+
     // BEGIN TYPICAL JAVA METHODS FOR EVENT CLASS
 
     public boolean equals(Event other) {
         return this.eventDate.equals(other.eventDate) && this.eventName.equals(other.eventName);
+    }
+
+    public int compareTo(Event other) {
+        if (this.getMonth() == other.getMonth())
+            return this.getDay() - other.getDay();
+        else
+            return this.getMonth() - other.getMonth();
     }
 
     public void setKey(String key) {
@@ -150,8 +161,7 @@ public class Event implements Parcelable
         return eventDate;
     }
 
-    public int getYear(){
-        return year;}
+    public int getYear(){ return year;}
 
     public int getMonth() {
         return month;

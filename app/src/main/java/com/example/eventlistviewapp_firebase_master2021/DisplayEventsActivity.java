@@ -30,7 +30,6 @@ public class DisplayEventsActivity extends AppCompatActivity {
         // This Activity received an arraylist of all the events pulled from firebase to populate the ListView with
         Intent intent = getIntent();
         myEvents = intent.getParcelableArrayListExtra("events");
-        Log.i("Denna", "" + myEvents.size());
 
         // Get a reference to the ListView element to display all Events in firebase
         ListView allEventsListView = findViewById(R.id.eventList);
@@ -41,7 +40,7 @@ public class DisplayEventsActivity extends AppCompatActivity {
 
         // Referenced for syntax: https://www.youtube.com/watch?v=XyxT8IQoZkc
         // Create a setOnItemClickListener for the listView to respond when they select the item
-        // located at index refered to as position in the method.
+        // located at index position in the method.
 
         allEventsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -100,26 +99,28 @@ public class DisplayEventsActivity extends AppCompatActivity {
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
             // attaches the custom xml design to this View you are creating
+            // in this case, row_data.xml contains the custom XML for ONE row
             view = getLayoutInflater().inflate(R.layout.row_data, null);
 
             // creates references to each element in the custom xml design.  That is why you
             // need to say view.findViewById because you have to reference the element that
             // was gotten from the LayoutInflater above
 
-            ImageView eventImageView = (ImageView)view.findViewById(R.id.eventImageView);
-            TextView eventNameTV = (TextView) view.findViewById(R.id.eventNameTV);
-            TextView eventDateTV = (TextView) view.findViewById(R.id.eventDateTV);
+            ImageView eventImageView = view.findViewById(R.id.eventImageView);
+            TextView eventNameTV = view.findViewById(R.id.eventNameTV);
+            TextView eventDateTV = view.findViewById(R.id.eventDateTV);
 
-            // Here I am getting the specific element in the database we are currently displaying
+            // Get the specific element in the database we are currently displaying for this row
             Event e = myEvents.get(i);
 
             // Set the correct image, event name, and event date for the Event object we are
             // displaying in the list
-            eventImageView.setImageResource(getMonth(e));
+            eventImageView.setImageResource(getMonth(e));   // calls a helper method to get correct image
             eventNameTV.setText(e.getEventName());
             eventDateTV.setText(e.getEventDate());
 
-            // return this view element with the correct data inserted
+            // return this view element with the correct data inserted and layout matching our
+            // custom row
             return view;
         }
 

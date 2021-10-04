@@ -15,6 +15,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Map;
 
 public class FirestoreHelper {
@@ -48,11 +49,9 @@ public class FirestoreHelper {
         });
     }
 
-
-
-
     /* You can add custom objects with Firestore as long as there is a public constructor
-    that takes no arguments AND a public getter for each property.
+    that takes no arguments AND a public getter for each property.  Because we included these
+    fields in the Event class, we can simply add an Event object and we don't have to use a Map object
 
      https://firebase.google.com/docs/firestore/manage-data/add-data?authuser=0
     */
@@ -60,13 +59,13 @@ public class FirestoreHelper {
         // use .add when you don't have a unique ID number for each document.  This will generate
         // one for you.  If you did have a unique ID number, then you would use set.
        db.collection("events")
-                .add(event)
+                .add(event) // adds an event without a key defined yet
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     // documentReference contains a reference to the newly created Document if done successfully
                     public void onSuccess(DocumentReference documentReference) {
                         db.collection("events").document(documentReference.getId())
-                                .update("key", documentReference.getId());
+                                .update("key", documentReference.getId());  // sets the DocID key for the Event that was just added
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -97,32 +96,16 @@ public class FirestoreHelper {
     }
 
     public void updateEvent(Event event) {
-        deleteEvent(event.getKey());
-        addEvent(event);
-//        db.collection("events").document(event.getKey())
-//
-////                .update("eventName", event.getEventName(),
-////                        "eventDate", event.getEventDate(),
-////                        "day", event.getDay(),
-////                        "month", event.getMonth(),
-////                        "year", event.getYear())
-////                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                    @Override
-//                                    public void onSuccess(Void aVoid) {
-//                                        Log.i("Denna", "DocumentSnapshot successfully deleted!");
-//                                    }
-//                                })
-//                                .addOnFailureListener(new OnFailureListener() {
-//                                    @Override
-//                                    public void onFailure(@NonNull Exception e) {
-//                                        Log.i("Denna", "Error deleting document", e);
-//                                    }
-//                                });
+        deleteEvent(event.getKey());    // deletes the old Event object
+        addEvent(event);                // adds it back - with the updated data
     }
 
     public ArrayList<Event> getEventsArrayList() {
+        Log.i("Denna", "before sort: " + eventsArrayList.toString());
+        Collections.sort(eventsArrayList);
+     //   Collections.reverse(eventsArrayList);
+        Log.i("Denna", "after sort" + eventsArrayList.toString());
         return eventsArrayList;
     }
-
 
 }
