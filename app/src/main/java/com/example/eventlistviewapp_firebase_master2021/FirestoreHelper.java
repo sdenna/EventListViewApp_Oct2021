@@ -15,6 +15,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class FirestoreHelper {
     private final FirebaseFirestore db;         // ref to entire database
@@ -77,9 +78,51 @@ public class FirestoreHelper {
 
     }
 
+    public void deleteEvent(String key) {
+        db.collection("events").document(key)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.i("Denna", "DocumentSnapshot successfully deleted!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.i("Denna", "Error deleting document", e);
+                    }
+                });
+
+    }
+
+    public void updateEvent(Event event) {
+        deleteEvent(event.getKey());
+        addEvent(event);
+//        db.collection("events").document(event.getKey())
+//
+////                .update("eventName", event.getEventName(),
+////                        "eventDate", event.getEventDate(),
+////                        "day", event.getDay(),
+////                        "month", event.getMonth(),
+////                        "year", event.getYear())
+////                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                    @Override
+//                                    public void onSuccess(Void aVoid) {
+//                                        Log.i("Denna", "DocumentSnapshot successfully deleted!");
+//                                    }
+//                                })
+//                                .addOnFailureListener(new OnFailureListener() {
+//                                    @Override
+//                                    public void onFailure(@NonNull Exception e) {
+//                                        Log.i("Denna", "Error deleting document", e);
+//                                    }
+//                                });
+    }
 
     public ArrayList<Event> getEventsArrayList() {
         return eventsArrayList;
     }
-    
+
+
 }

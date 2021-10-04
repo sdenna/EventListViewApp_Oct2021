@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                                                  }
                                              }
         );
-
+        
     }
 
     public void addEventButtonPressed(View v) {
