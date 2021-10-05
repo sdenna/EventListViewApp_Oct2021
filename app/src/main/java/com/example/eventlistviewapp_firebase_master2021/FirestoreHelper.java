@@ -16,7 +16,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Map;
 
 public class FirestoreHelper {
     private final FirebaseFirestore db;         // ref to entire database
@@ -95,11 +94,11 @@ public class FirestoreHelper {
 
     }
 
-    // Updates all fields except key because I don't know what fields were edited.
+    // set will override an existing Event object with this key
+    // if one isn't available, then it will add the object.
     public void updateEvent(Event event) {
-       db.collection("events").document(event.getKey())
-               .delete();
-       db.collection("events").add(event);
+        db.collection("events").document(event.getKey())
+                .set(event);
     }
 
     public ArrayList<Event> getEventsArrayList() {
