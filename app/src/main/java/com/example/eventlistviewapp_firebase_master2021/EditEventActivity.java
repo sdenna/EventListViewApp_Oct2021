@@ -103,6 +103,7 @@ public class EditEventActivity extends AppCompatActivity {
        // call the firestore helper method delete and pass it the key for the document you wish to delete
         Log.i("Denna", "trying to delete " + keyToUpdate);
         dbHelper.deleteEvent(keyToUpdate);
+        onHome(v);
     }
     public void showData(View v) {
         Intent intent = new Intent(EditEventActivity.this, DisplayEventsActivity.class);
@@ -111,9 +112,9 @@ public class EditEventActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    // do I need this???
     public void onHome(View v) {
-
+        Intent intent = new Intent(EditEventActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 
     /**
