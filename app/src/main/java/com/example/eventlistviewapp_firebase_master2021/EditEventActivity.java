@@ -60,7 +60,7 @@ public class EditEventActivity extends AppCompatActivity {
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month-1);
+        calendar.set(Calendar.MONTH, month - 1);    // months go from 0 - 11 in Calendar
         calendar.set(Calendar.DAY_OF_MONTH, day);
 
         long milliTime = calendar.getTimeInMillis();
@@ -72,9 +72,10 @@ public class EditEventActivity extends AppCompatActivity {
             public void onSelectedDayChange(CalendarView calendarView, int year, int month, int day) {
                 dateSelected = (month + 1) + "/" + day + "/" + year;
                 dateYear = year;
-                dateMonth = month;
+                dateMonth = month+1;
                 dateDay = day;
                 closeKeyboard();
+                //Log.i("Denna", month + " " + day + " " + year); // shows date clicked on
             }
         });
     }
