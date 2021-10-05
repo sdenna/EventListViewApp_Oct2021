@@ -95,17 +95,15 @@ public class FirestoreHelper {
 
     }
 
+    // Updates all fields except key because I don't know what fields were edited.
     public void updateEvent(Event event) {
-        deleteEvent(event.getKey());    // deletes the old Event object
-        addEvent(event);                // adds it back - with the updated data
+       db.collection("events").document(event.getKey())
+               .delete();
+       db.collection("events").add(event);
     }
 
     public ArrayList<Event> getEventsArrayList() {
-        Log.i("Denna", "before sort: " + eventsArrayList.toString());
         Collections.sort(eventsArrayList);
-     //   Collections.reverse(eventsArrayList);
-        Log.i("Denna", "after sort" + eventsArrayList.toString());
         return eventsArrayList;
     }
-
 }

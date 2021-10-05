@@ -43,36 +43,37 @@ public class EditEventActivity extends AppCompatActivity {
 
         eventNameET = findViewById(R.id.eventName);
         calendarView =  findViewById(R.id.eventCalendarDate);
-
         eventNameET.setText(eventNameToUpdate);
 
         // This allows us to parse out the date to get the month, day, and year
         String parts[] = eventDateToUpdate.split("/");
 
         int month = Integer.parseInt(parts[0]);
+        dateMonth = month;
         int day = Integer.parseInt(parts[1]);
+        dateDay = day;
         int year = Integer.parseInt(parts[2]);
-        dateSelected = (month + 1) + "/" + day + "/" + year;
+        dateYear = year;
+        dateSelected = (month) + "/" + day + "/" + year;
 
         // Sets the month day, year on the calendar view so we can display the date
         // they chose and avoid having to error check their entry when they enter a new date
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month - 1);
+        calendar.set(Calendar.MONTH, month-1);
         calendar.set(Calendar.DAY_OF_MONTH, day);
 
         long milliTime = calendar.getTimeInMillis();
         calendarView.setDate(milliTime);
 
-     //   SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-
+        // This listener updates the values of the variables when the user selects other dates
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView calendarView, int year, int month, int day) {
                 dateSelected = (month + 1) + "/" + day + "/" + year;
                 dateYear = year;
-                dateMonth = month + 1;
+                dateMonth = month;
                 dateDay = day;
                 closeKeyboard();
             }
@@ -80,7 +81,7 @@ public class EditEventActivity extends AppCompatActivity {
     }
 
     public void updateEventData(View v) {
-        EditText eventNameET = (EditText) findViewById(R.id.eventName);
+        EditText eventNameET = findViewById(R.id.eventName);
         String eventName = eventNameET.getText().toString();
 
         // verify there is a name and date
@@ -92,19 +93,20 @@ public class EditEventActivity extends AppCompatActivity {
         }
         else {
             Event updatedEvent = new Event(eventName, dateSelected, dateYear, dateMonth, dateDay, keyToUpdate);
+            Log.i("Denna", updatedEvent.toString());
             eventNameET.setText("");    // clears out text
             Toast.makeText(EditEventActivity.this, updatedEvent.getEventDate() + " " + updatedEvent.getEventName(), Toast.LENGTH_SHORT).show();
             dbHelper.updateEvent(updatedEvent);
         }
-
     }
 
     public void deleteEventData(View v) {
        // call the firestore helper method delete and pass it the key for the document you wish to delete
-        Log.i("Denna", "trying to delete " + keyToUpdate);
         dbHelper.deleteEvent(keyToUpdate);
-        onHome(v);
+        onHome(v);      // returns to home screen after deleting for a fresh reload
     }
+
+    // this will load the ArrayList of Events, send it through the intent, and then start the activity
     public void showData(View v) {
         Intent intent = new Intent(EditEventActivity.this, DisplayEventsActivity.class);
         ArrayList<Event> eventsToShow = dbHelper.getEventsArrayList();
@@ -112,6 +114,7 @@ public class EditEventActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    // Brings user back to Home Screen
     public void onHome(View v) {
         Intent intent = new Intent(EditEventActivity.this, MainActivity.class);
         startActivity(intent);
