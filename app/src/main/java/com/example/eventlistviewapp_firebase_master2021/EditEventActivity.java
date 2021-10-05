@@ -97,6 +97,7 @@ public class EditEventActivity extends AppCompatActivity {
             eventNameET.setText("");    // clears out text
             Toast.makeText(EditEventActivity.this, updatedEvent.getEventDate() + " " + updatedEvent.getEventName(), Toast.LENGTH_SHORT).show();
             dbHelper.updateEvent(updatedEvent);
+            onHome(v);      // returns to home screen after deleting for a fresh reload
         }
     }
 
